@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>FoodTrace – Food Factory Inventory</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#f1f5f9;--sf:#fff;--tx:#0f172a;--mu:#64748b;--bd:#e2e8f0;--rw:#f8fafc;--ac:#3b82f6;--nv:#1e293b;--gr:#10b981;--or:#f97316;--rd:#ef4444;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1120;--sf:#162033;--tx:#e5e9f0;--mu:#94a3b8;--bd:#263349;--rw:#1a263b;--nv:#0f172a;color-scheme:dark}}
+:root[data-theme=dark]{--bg:#0b1120;--sf:#162033;--tx:#e5e9f0;--mu:#94a3b8;--bd:#263349;--rw:#1a263b;--nv:#0f172a;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--sf);z-index:40}
+.shell{display:flex;min-height:100vh}
+.side{width:230px;background:var(--nv);color:#cbd5e1;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;flex-shrink:0;z-index:30;transition:transform .3s}
+.brand{display:flex;align-items:center;gap:10px;padding:16px;color:#fff;font-weight:700;font-size:16px;border-bottom:1px solid #ffffff14}
+.logo{width:32px;height:32px;border-radius:8px;background:var(--ac);color:#fff;display:grid;place-items:center;font-weight:800}
+.sl{font-size:10px;letter-spacing:.1em;color:#64748b;padding:16px 16px 6px}
+.ni{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;color:#cbd5e1;border:0;background:none;width:100%;font:inherit;text-align:left;border-left:3px solid transparent;transition:.2s}
+.ni:hover{background:#ffffff10;padding-left:20px}.ni.on{background:#3b82f622;color:#fff;border-left-color:var(--ac)}
+.ts{display:flex;align-items:center;gap:8px;padding:6px 16px;font-size:12px}.ts i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:10px;font-weight:700;color:#fff}
+.ts small{display:block;color:#94a3b8;font-size:11px}
+.main{flex:1;min-width:0}
+header{display:flex;align-items:center;gap:12px;padding:10px 20px;background:var(--sf);border-bottom:1px solid var(--bd);position:sticky;top:env(safe-area-inset-top,0px);z-index:20}
+.bc{flex:1;color:var(--mu)}.bc b{color:var(--tx);font-weight:600}
+.av{width:36px;height:36px;border-radius:50%;background:var(--ac);color:#fff;display:grid;place-items:center;font-weight:700;font-size:12px}
+.ib{border:0;background:none;font-size:18px;cursor:pointer;position:relative;color:var(--tx);padding:4px}.ib em{position:absolute;top:-2px;right:-4px;background:var(--rd);color:#fff;font-size:10px;font-style:normal;border-radius:9px;padding:0 5px}
+.hm{display:none}.ov{display:none}
+.pg{padding:20px;max-width:1100px}
+.fade{animation:fd .45s ease both}@keyframes fd{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+h1{font-size:22px;margin:0 0 2px}h2{font-size:15px;margin:0}.mu{color:var(--mu);font-size:13px}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:18px 0}
+.k{background:var(--sf);border-radius:10px;padding:14px;display:flex;gap:12px;align-items:center;border-top:3px solid var(--c);box-shadow:0 1px 3px #0f172a14;transition:.25s;animation:fd .5s both}
+.k:hover{transform:translateY(-4px);box-shadow:0 10px 24px #0f172a22}
+.k:nth-child(2){animation-delay:.08s}.k:nth-child(3){animation-delay:.16s}.k:nth-child(4){animation-delay:.24s}
+.ki{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;background:color-mix(in srgb,var(--c) 15%,transparent);color:var(--c)}
+.k small{color:var(--mu);font-size:11px;text-transform:uppercase;letter-spacing:.04em}.k b{display:block;font-size:24px;line-height:1.1}.k span{font-size:11px;color:var(--c)}
+.cd{background:var(--sf);border-radius:10px;box-shadow:0 1px 3px #0f172a14;margin-bottom:16px;overflow:hidden}
+.ch{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:14px 16px}.cb{padding:0 16px 16px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse}
+th{background:var(--rw);color:var(--mu);font-size:11px;text-transform:uppercase;letter-spacing:.05em;text-align:left;padding:10px 14px;white-space:nowrap}
+td{padding:11px 14px;border-top:1px solid var(--bd);white-space:nowrap}tbody tr{animation:fd .4s both;transition:background .15s}tbody tr:nth-child(even){background:var(--rw)}tbody tr:hover{background:color-mix(in srgb,var(--ac) 9%,transparent)}
+.pl{padding:2px 10px;border-radius:99px;font-size:11px;font-weight:600}.pl.g{background:#10b98126;color:#10b981}.pl.y{background:#f59e0b26;color:#d97706}.pl.r{background:#ef444426;color:#ef4444}
+.pos{color:var(--gr);font-weight:600}.neg{color:var(--rd);font-weight:600}
+.btn{border:1px solid var(--bd);background:var(--sf);color:var(--tx);padding:8px 14px;border-radius:8px;font:inherit;font-weight:600;cursor:pointer;transition:.18s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 10px #0f172a22}.btn:active{transform:scale(.96)}.btn.p{background:var(--ac);color:#fff;border-color:var(--ac)}.btn.d{color:var(--rd);padding:4px 10px}.btn.w{width:100%;margin-top:8px}.btn[disabled]{opacity:.4;pointer-events:none}
+input,select{font:inherit;padding:9px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--rw);color:var(--tx);width:100%;transition:.2s}
+input:focus,select:focus{outline:0;border-color:var(--ac);box-shadow:0 0 0 3px #3b82f633}
+label{display:block;font-size:12px;color:var(--mu);margin:8px 0 3px;font-weight:600}
+.fr{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:0 12px}
+.sr{width:220px}.pgn{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px;border-top:1px solid var(--bd)}
+.pgn div{display:flex;gap:6px}.pgn .btn{padding:5px 11px}
+.row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}.row>*{flex:1 1 140px}.row .btn{flex:0 0 auto}
+.bar{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--ac),var(--gr));animation:gw .9s ease both;transform-origin:left}@keyframes gw{from{transform:scaleX(0)}}
+.mo{position:fixed;inset:0;background:#0f172a99;display:grid;place-items:center;z-index:60;padding:16px;animation:fi .2s}@keyframes fi{from{opacity:0}}
+.mb{background:var(--sf);border-radius:14px;padding:20px;width:100%;max-width:520px;max-height:90vh;overflow:auto;animation:pop .3s cubic-bezier(.2,1.3,.4,1)}@keyframes pop{from{transform:scale(.9) translateY(20px);opacity:0}}
+.ts2{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--nv);color:#fff;padding:10px 18px;border-radius:99px;z-index:70;animation:up .3s}@keyframes up{from{opacity:0;transform:translate(-50%,20px)}}
+.lg{min-height:100vh;display:grid;place-items:center;padding:16px;background:linear-gradient(135deg,#1e293b,#2563eb)}
+.lg .box{background:var(--sf);border-radius:16px;padding:28px;width:100%;max-width:360px;animation:pop .5s cubic-bezier(.2,1.3,.4,1)}.lg .logo{margin-bottom:12px;width:44px;height:44px;font-size:20px}
+.er{color:var(--rd);min-height:18px;margin:6px 0 0}
+@media(max-width:820px){.side{position:fixed;left:0;top:0;transform:translateX(-100%)}.side.open{transform:none}.ov.open{display:block;position:fixed;inset:0;background:#0f172a88;z-index:25}.hm{display:block}.pg{padding:14px}.sr{width:100%}.dt{display:none}}
+@media print{.side,header,.np{display:none}body{background:#fff;color:#000}}
+</style></head><body><div id="app"></div><div id="ov2"></div>
+<script>
+const K='foodtrace_v1';let db=null;try{db=JSON.parse(localStorage.getItem(K))}catch(e){}
+const uid=()=>Math.random().toString(36).slice(2,8);
+const dAdd=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x.toISOString().slice(0,10)};
+const today=()=>new Date().toISOString().slice(0,10);
+const dTo=d=>d?Math.ceil((new Date(d)-new Date(today()))/864e5):9999;
+function seed(){const t=today(),I=(name,type,unit,min,price,shelf,bom)=>({id:uid(),name,type,unit,min,price,shelf,bom:bom||[]});
+const f=I('Wheat flour','raw','kg',100),o=I('Palm oil','raw','L',50),s=I('Spice mix','raw','kg',20),p=I('Pouch 200 g','pack','pcs',500),c=I('Carton (24 packs)','pack','pcs',20);
+const g=I('Masala Chips 200 g','fg','pcs',200,40,180,[{item:f.id,qty:.12},{item:o.id,qty:.05},{item:s.id,qty:.01},{item:p.id,qty:1}]);
+const B=(it,lot,qty,exp,cost,sup)=>({id:uid(),item:it.id,lot,qty,exp,cost,date:t,sup});
+return{user:'admin',pass:'admin123',items:[f,o,s,p,c,g],batches:[B(f,'FL-A101',300,dAdd(t,25),1.2,'Agro Mills'),B(f,'FL-A102',500,dAdd(t,120),1.25,'Agro Mills'),B(o,'OIL-77',80,dAdd(t,200),3.1,'Palm Co'),B(s,'SP-12',15,dAdd(t,90),9,'Spice Hub'),B(p,'PCH-9',3000,dAdd(t,365),.5,'PackWell'),B(c,'CTN-3',100,'',1.1,'PackWell')],prod:[],sales:[]}}
+if(!db)db=seed();
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(db))}catch(e){}};
+const item=id=>db.items.find(i=>i.id==id)||{name:'?',unit:'',bom:[]};
+const stock=id=>db.batches.filter(b=>b.item==id).reduce((s,b)=>s+b.qty,0);
+const $=id=>document.getElementById(id),V=id=>$(id).value,N=id=>parseFloat(V(id))||0;
+const fm=n=>(Math.round(n*100)/100).toLocaleString();
+const T={raw:'Raw material',pack:'Packaging',fg:'Finished'};
+let view='dash',authed=false,cart=[],lastSale=null,tq='',recFg=null,sb=false,an=true,q='',pg=1;
+const TB=[['dash','📊','Dashboard'],['inv','📦','Inventory'],['rec','📋','Recipes'],['prod','🏭','Production'],['sale','🧾','Billing'],['trace','🔍','Recall trace']];
+const fefo=(id,qty)=>{const bs=db.batches.filter(b=>b.item==id&&b.qty>0).sort((a,b)=>(a.exp||'9')<(b.exp||'9')?-1:1);let r=[],n=qty;for(const b of bs){if(n<=0)break;const u=Math.min(b.qty,n);r.push({b,q:u});n-=u}return n>1e-9?null:r};
+const tag=d=>d==9999?'<span class=mu>No expiry</span>':d<0?'<span class="pl r">Expired</span>':d<=30?`<span class="pl y">${d} days</span>`:`<span class="pl g">${d} days</span>`;
+const sold=id=>db.sales.reduce((s,x)=>s+x.lines.filter(l=>l.item==id).reduce((a,l)=>a+l.qty,0),0);
+function st(i){const s=stock(i.id);if(s<=0)return['Out of stock','r'];if(db.batches.some(b=>b.item==i.id&&b.qty>0&&dTo(b.exp)<=30))return['Expiring','y'];if(s<i.min)return['Low Stock','y'];return['Active','g']}
+const alerts=()=>db.items.filter(i=>stock(i.id)<i.min).length+db.batches.filter(b=>b.qty>0&&dTo(b.exp)<=30).length;
+function toast(m){const e=document.createElement('div');e.className='ts2';e.textContent=m;document.body.appendChild(e);setTimeout(()=>e.remove(),2400)}
+function openM(h){$('ov2').innerHTML=`<div class=mo onclick="if(event.target==this)closeM()"><div class=mb>${h}</div></div>`}
+const closeM=()=>$('ov2').innerHTML='';
+function invTbl(){const s=q.toLowerCase(),rs=db.items.filter(i=>i.name.toLowerCase().includes(s)),pp=6,n=Math.max(1,Math.ceil(rs.length/pp));if(pg>n)pg=n;const a=(pg-1)*pp;
+return`<div class=tw><table><thead><tr><th>Product name</th><th>Type</th><th>Stock</th><th class=dt>Min</th><th class=dt>Total value</th><th>Sold</th><th>Status</th><th></th></tr></thead><tbody>${rs.slice(a,a+pp).map((i,x)=>{const [l,c]=st(i),v=db.batches.filter(b=>b.item==i.id).reduce((s,b)=>s+b.qty*b.cost,0);return`<tr style="animation-delay:${x*50}ms"><td><b>${i.name}</b></td><td class=mu>${T[i.type]}</td><td>${fm(stock(i.id))} ${i.unit}</td><td class=dt>${i.min}</td><td class=dt>${fm(v)}</td><td>${i.type=='fg'?sold(i.id):'–'}</td><td><span class="pl ${c}">${l}</span></td><td><button class="btn d" onclick="delItem('${i.id}')">✕</button></td></tr>`}).join('')||'<tr><td colspan=8 class=mu>No products found</td></tr>'}</tbody></table></div>
+<div class=pgn><span class=mu>Showing ${Math.min(pp,rs.length-a)} of ${rs.length} products</span><div><button class=btn ${pg<2?'disabled':''} onclick="pg--;tb()">← Prev</button>${Array.from({length:n},(_,i)=>`<button class="btn ${i+1==pg?'p':''}" onclick="pg=${i+1};tb()">${i+1}</button>`).join('')}<button class="btn p" ${pg>=n?'disabled':''} onclick="pg++;tb()">Next →</button></div></div>`}
+const tb=()=>{$('tbl').innerHTML=invTbl()};
+const prodCard=()=>`<div class=cd><div class=ch><div><h2>Product inventory</h2><span class=mu>${db.items.length} products · ${db.batches.filter(b=>b.qty>0).length} active batches</span></div><div class=row style="flex:0 1 auto;align-items:center"><input class=sr placeholder="Search products..." value="${q}" oninput="q=this.value;pg=1;tb()"><button class="btn p" onclick=mItem()>+ Add Product</button><button class=btn onclick=mRec()>+ Receive stock</button></div></div><div id=tbl>${invTbl()}</div></div>`;
+const views={
+dash(){const lo=db.items.filter(i=>stock(i.id)<i.min),ex=db.batches.filter(b=>b.qty>0&&dTo(b.exp)<=30).sort((a,b)=>a.exp<b.exp?-1:1);
+const val=db.batches.reduce((s,b)=>s+b.qty*b.cost,0),rev=db.sales.reduce((s,x)=>s+x.total,0),pr=db.sales.reduce((s,x)=>s+x.profit,0),us=db.sales.reduce((s,x)=>s+x.lines.reduce((a,l)=>a+l.qty,0),0),ut=db.sales.filter(s=>s.date==today()).reduce((s,x)=>s+x.lines.reduce((a,l)=>a+l.qty,0),0);
+const by={};db.sales.forEach(s=>s.lines.forEach(l=>by[l.item]=(by[l.item]||0)+l.qty*l.price));const mx=Math.max(1,...Object.values(by)),h=new Date().getHours();
+const K=(c,ic,l,n,sub)=>`<div class=k style="--c:${c}"><div class=ki>${ic}</div><div><small>${l}</small><b data-n="${n}">${fm(n)}</b><span>${sub}</span></div></div>`;
+return`<h1>Good ${h<12?'morning':h<17?'afternoon':'evening'}, Admin! 👋</h1><div class=mu>Here is your factory inventory overview for today.</div>
+<div class=kp>${K('#3b82f6','#',"Total products",db.items.length,db.items.filter(i=>i.type=='fg').length+' finished goods')}${K('#10b981','$','Stock value',val,db.batches.filter(b=>b.qty>0).length+' active batches')}${K('#f97316','→','Units sold',us,ut+' sold today')}${K(pr<0?'#ef4444':'#10b981','P/L','Net profit',pr,'Margin '+(rev?fm(pr/rev*100):0)+'%')}</div>
+${prodCard()}
+<div class=fr style="gap:16px"><div class=cd><div class=ch><h2>⚠️ Low-stock alerts</h2></div><div class=cb>${lo.map(i=>`<div>${i.name}: <b>${fm(stock(i.id))} ${i.unit}</b> <span class=mu>(min ${i.min})</span> <span class="pl y">Reorder</span></div>`).join('')||'<span class=mu>All stock levels healthy.</span>'}</div></div>
+<div class=cd><div class=ch><h2>⏳ Expiring soon (FEFO)</h2></div><div class=cb>${ex.map(b=>`<div>${item(b.item).name} · ${b.lot} · ${fm(b.qty)} ${item(b.item).unit} ${tag(dTo(b.exp))}</div>`).join('')||'<span class=mu>Nothing expiring soon.</span>'}</div></div></div>
+<div class=cd><div class=ch><h2>Sales by product</h2></div><div class=cb>${Object.entries(by).map(([k,v])=>`<div style="margin-bottom:8px">${item(k).name} <span class=mu>· ${fm(v)}</span><div class=bar style="width:${v/mx*100}%"></div></div>`).join('')||'<span class=mu>No sales yet. Create a bill to see reports here.</span>'}</div></div>
+<div class=cd><div class=ch><h2>Recent sales</h2></div><div class=tw><table><thead><tr><th>Bill</th><th>Date</th><th>Customer</th><th>Total</th><th>Profit</th></tr></thead><tbody>${db.sales.slice(-6).reverse().map(s=>`<tr><td>${s.no}</td><td>${s.date}</td><td>${s.cust}</td><td>${fm(s.total)}</td><td class="${s.profit<0?'neg':'pos'}">${s.profit<0?'':'+'}${fm(s.profit)}</td></tr>`).join('')}</tbody></table></div></div>`},
+inv(){return`<h1>Inventory</h1><div class=mu>Items and stock batches, earliest expiry first.</div><div style="height:16px"></div>${prodCard()}<div class=cd><div class=ch><h2>Batches</h2></div><div class=tw><table><thead><tr><th>Item</th><th>Lot</th><th>Qty</th><th>Cost</th><th>Expiry</th><th>Time left</th></tr></thead><tbody>${db.batches.filter(b=>b.qty>0).sort((a,b)=>(a.exp||'9')<(b.exp||'9')?-1:1).map(b=>`<tr><td>${item(b.item).name}</td><td>${b.lot}</td><td>${fm(b.qty)} ${item(b.item).unit}</td><td>${fm(b.cost)}</td><td>${b.exp||'–'}</td><td>${tag(dTo(b.exp))}</td></tr>`).join('')}</tbody></table></div></div>`},
+rec(){const fgs=db.items.filter(i=>i.type=='fg');if(!fgs.length)return'<h1>Recipes</h1><p class=mu>Add a finished product first.</p>';const g=item(recFg).type=='fg'?item(recFg):fgs[0];recFg=g.id;
+const cost=g.bom.reduce((s,l)=>{const bs=db.batches.filter(b=>b.item==l.item&&b.qty>0);return s+(bs.length?bs.reduce((a,b)=>a+b.cost,0)/bs.length:0)*l.qty},0);
+return`<h1>Recipes / BOM</h1><div class=mu>Materials needed per 1 unit of finished product.</div><div style="height:16px"></div><div class=cd><div class=ch><select style="max-width:300px" onchange="recFg=this.value;render()">${fgs.map(f=>`<option value=${f.id} ${f.id==g.id?'selected':''}>${f.name}</option>`).join('')}</select><span>Cost/unit <b>${fm(cost)}</b> · Price ${fm(g.price)} · Margin <b class=pos>${g.price?fm((g.price-cost)/g.price*100):0}%</b></span></div><div class=tw><table><thead><tr><th>Ingredient / packaging</th><th>Qty per unit</th><th>Available</th><th></th></tr></thead><tbody>${g.bom.map((l,n)=>`<tr><td>${item(l.item).name}</td><td>${l.qty} ${item(l.item).unit}</td><td>${fm(stock(l.item))}</td><td><button class="btn d" onclick="delLine(${n})">Remove</button></td></tr>`).join('')}</tbody></table></div><div class=cb style="padding-top:14px"><div class=row><div><label>Material</label><select id=bi>${db.items.filter(i=>i.type!='fg').map(i=>`<option value=${i.id}>${i.name} (${i.unit})</option>`).join('')}</select></div><div><label>Qty per unit</label><input id=bq type=number step=any></div><button class="btn p" onclick=addLine()>Add line</button></div></div></div>`},
+prod(){const fgs=db.items.filter(i=>i.type=='fg');return`<h1>Production</h1><div class=mu>Materials are deducted earliest-expiry-first and a traceable batch is created.</div><div style="height:16px"></div><div class=cd><div class=cb style="padding-top:14px"><div class=row><div><label>Product</label><select id=pf>${fgs.map(f=>`<option value=${f.id}>${f.name}</option>`).join('')}</select></div><div><label>Planned output</label><input id=pq type=number></div><div><label>Actual good output</label><input id=pa type=number></div><button class="btn p" onclick=produce()>Produce</button></div></div></div>
+<div class=cd><div class=ch><h2>Production history</h2></div><div class=tw><table><thead><tr><th>Date</th><th>Product</th><th>Lot</th><th>Planned</th><th>Actual</th><th>Yield</th><th>Unit cost</th></tr></thead><tbody>${db.prod.slice().reverse().map(p=>`<tr><td>${p.date}</td><td>${item(p.fg).name}</td><td>${p.lot}</td><td>${p.planned}</td><td>${p.actual}</td><td>${fm(p.actual/p.planned*100)}% ${p.actual/p.planned<.95?'<span class="pl y">Loss</span>':''}</td><td>${fm(p.cost)}</td></tr>`).join('')||'<tr><td colspan=7 class=mu>No production yet</td></tr>'}</tbody></table></div></div>`},
+sale(){const fgs=db.items.filter(i=>i.type=='fg'),tot=cart.reduce((s,c)=>s+c.qty*item(c.item).price,0);return`<h1>Billing</h1><div class=mu>Stock reduces automatically, earliest expiry first.</div><div style="height:16px"></div><div class=cd><div class=cb style="padding-top:14px"><label>Customer / distributor</label><input id=sc placeholder="Walk-in"><div class=row style="margin-top:6px"><div><label>Product</label><select id=sf>${fgs.map(f=>`<option value=${f.id}>${f.name} (stock ${fm(stock(f.id))})</option>`).join('')}</select></div><div><label>Quantity</label><input id=sq type=number></div><button class=btn onclick=addCart()>Add</button></div></div>${cart.length?`<div class=tw><table><tbody>${cart.map((c,n)=>`<tr><td>${item(c.item).name}</td><td>${c.qty}</td><td>${fm(c.qty*item(c.item).price)}</td><td><button class="btn d" onclick="cart.splice(${n},1);render()">✕</button></td></tr>`).join('')}</tbody></table></div>`:''}<div class=pgn><b style="font-size:18px">Total: ${fm(tot)}</b><button class="btn p" onclick=bill()>Generate bill</button></div></div>
+<div class=cd><div class=ch><h2>Past bills</h2></div><div class=cb>${db.sales.slice().reverse().map(s=>`<div><a href=# onclick="lastSale=db.sales.find(x=>x.no=='${s.no}');go('bill');return false">${s.no}</a> · ${s.date} · ${s.cust} · ${fm(s.total)}</div>`).join('')||'<span class=mu>No bills yet.</span>'}</div></div>`},
+bill(){const s=lastSale;if(!s)return'';return`<div class=cd><div class=ch><div><h2>Invoice ${s.no}</h2><span class=mu>${s.date} · ${s.cust}</span></div><div class=np><button class="btn p" onclick=print()>Print</button> <button class=btn onclick="go('sale')">Back</button></div></div><div class=tw><table><thead><tr><th>Item</th><th>Batch</th><th>Expiry</th><th>Qty</th><th>Price</th><th>Amount</th></tr></thead><tbody>${s.lines.map(l=>`<tr><td>${item(l.item).name}</td><td>${l.lot}</td><td>${l.exp||'–'}</td><td>${l.qty}</td><td>${fm(l.price)}</td><td>${fm(l.qty*l.price)}</td></tr>`).join('')}</tbody></table></div><div class=pgn><span></span><h2>Total: ${fm(s.total)}</h2></div></div>`},
+trace(){return`<h1>Recall trace</h1><div class=mu>Enter any raw material, packaging or finished lot number to see where it went.</div><div style="height:16px"></div><div class=cd><div class=cb style="padding-top:14px"><div class=row><input id=tq value="${tq}" placeholder="e.g. FL-A101" onkeydown="if(event.key=='Enter'){tq=V('tq');render()}"><button class="btn p" onclick="tq=V('tq');render()">Trace</button></div></div></div>${traceRes(tq)}`}};
+function traceRes(s){s=s.trim().toLowerCase();if(!s)return'';const runs=db.prod.filter(p=>p.lot.toLowerCase()==s||p.used.some(u=>u.lot.toLowerCase()==s));if(!runs.length)return'<div class=cd><div class=cb style="padding-top:14px">No production run found for that lot.</div></div>';
+return runs.map(p=>{const cu=db.sales.filter(x=>x.lines.some(l=>l.lot==p.lot)).map(x=>`${x.cust} – ${x.lines.filter(l=>l.lot==p.lot).reduce((a,l)=>a+l.qty,0)} units (${x.no}, ${x.date})`);
+return`<div class=cd><div class=cb style="padding-top:14px"><b>${item(p.fg).name}</b> · lot ${p.lot} · made ${p.date}<br><span class=mu>Inputs:</span> ${p.used.map(u=>`${item(u.item).name} ${u.lot}`).join(', ')}<br><span class=mu>Shipped to:</span> ${cu.join('; ')||'not dispatched yet'}<br><span class=mu>In stock now:</span> ${fm((db.batches.find(b=>b.lot==p.lot)||{qty:0}).qty)}</div></div>`}).join('')}
+function mItem(){openM(`<h2>Add product</h2><div class=fr><div><label>Name</label><input id=in></div><div><label>Type</label><select id=it><option value=raw>Raw material</option><option value=pack>Packaging</option><option value=fg>Finished product</option></select></div><div><label>Unit</label><input id=iu value=kg></div><div><label>Min stock</label><input id=im type=number></div><div><label>Selling price (finished)</label><input id=ip type=number></div><div><label>Shelf life days (finished)</label><input id=is type=number value=180></div></div><div class=row style="margin-top:14px;justify-content:flex-end"><button class=btn onclick=closeM()>Cancel</button><button class="btn p" onclick=addItem()>Save</button></div>`)}
+function mRec(){openM(`<h2>Receive stock</h2><div class=fr><div><label>Item</label><select id=rb>${db.items.filter(i=>i.type!='fg').map(i=>`<option value=${i.id}>${i.name}</option>`).join('')}</select></div><div><label>Supplier lot no.</label><input id=rl></div><div><label>Quantity</label><input id=rq type=number></div><div><label>Cost per unit</label><input id=rc type=number></div><div><label>Expiry date</label><input id=re type=date></div><div><label>Supplier</label><input id=rs></div></div><div class=row style="margin-top:14px;justify-content:flex-end"><button class=btn onclick=closeM()>Cancel</button><button class="btn p" onclick=receive()>Receive</button></div>`)}
+function addItem(){const n=V('in').trim();if(!n)return toast('Enter a name');db.items.push({id:uid(),name:n,type:V('it'),unit:V('iu'),min:N('im'),price:N('ip'),shelf:N('is'),bom:[]});save();closeM();an=false;render();toast('Product added')}
+function delItem(id){db.items=db.items.filter(i=>i.id!=id);db.batches=db.batches.filter(b=>b.item!=id);save();an=false;render();toast('Product deleted')}
+function receive(){if(!N('rq')||!V('rb'))return toast('Enter item and quantity');db.batches.push({id:uid(),item:V('rb'),lot:V('rl')||'LOT-'+uid().toUpperCase(),qty:N('rq'),exp:V('re'),cost:N('rc'),date:today(),sup:V('rs')});save();closeM();an=false;render();toast('Stock received')}
+function addLine(){if(!N('bq'))return;item(recFg).bom.push({item:V('bi'),qty:N('bq')});save();an=false;render()}
+function delLine(n){item(recFg).bom.splice(n,1);save();an=false;render()}
+function produce(){const g=item(V('pf')),pl=N('pq'),ac=N('pa')||pl;if(!g.bom.length||pl<=0)return toast('Add a recipe and planned quantity first');
+const used=[];let cost=0;for(const l of g.bom){const a=fefo(l.item,l.qty*pl);if(!a)return toast('Not enough '+item(l.item).name);a.forEach(x=>used.push({...x,item:l.item}))}
+used.forEach(x=>{x.b.qty-=x.q;cost+=x.q*x.b.cost});const lot='FG'+today().replace(/-/g,'').slice(2)+'-'+(db.prod.length+1);
+db.batches.push({id:uid(),item:g.id,lot,qty:ac,exp:dAdd(today(),g.shelf||180),cost:cost/ac,date:today()});
+db.prod.push({id:uid(),date:today(),fg:g.id,planned:pl,actual:ac,lot,cost:cost/ac,used:used.map(x=>({item:x.item,lot:x.b.lot,qty:x.q}))});save();an=false;render();toast('Produced lot '+lot)}
+function addCart(){const n=N('sq');if(n>0)cart.push({item:V('sf'),qty:n});an=false;render()}
+function bill(){if(!cart.length)return toast('Cart is empty');const lines=[];
+for(const c of cart){const a=fefo(c.item,c.qty);if(!a)return toast('Insufficient stock: '+item(c.item).name);a.forEach(x=>lines.push({item:c.item,lot:x.b.lot,exp:x.b.exp,qty:x.q,price:item(c.item).price,cost:x.b.cost,b:x.b}))}
+lines.forEach(l=>l.b.qty-=l.qty);const total=lines.reduce((s,l)=>s+l.qty*l.price,0),profit=lines.reduce((s,l)=>s+l.qty*(l.price-l.cost),0);
+const s={no:'INV-'+String(db.sales.length+1).padStart(4,'0'),date:today(),cust:V('sc')||'Walk-in',total,profit,lines:lines.map(({b,...r})=>r)};
+db.sales.push(s);lastSale=s;cart=[];save();toast('Bill '+s.no+' created');go('bill')}
+function login(){if(V('lu')==db.user&&V('lp')==db.pass){authed=true;an=true;render()}else $('le').textContent='Wrong username or password'}
+const go=v=>{view=v;sb=false;an=true;pg=1;render();scrollTo(0,0)};
+const tsb=()=>{sb=!sb;render()};
+function theme(){const r=document.documentElement,d=r.dataset.theme=='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme:dark)').matches);r.dataset.theme=d?'light':'dark'}
+function cnt(){document.querySelectorAll('[data-n]').forEach(e=>{const t=+e.dataset.n,t0=performance.now();(function f(n){const k=Math.min(1,(n-t0)/900);e.textContent=fm(t*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(f)})(t0)})}
+function render(){const a=$('app');
+if(!authed){a.innerHTML=`<div class=lg><div class=box><div class=logo>F</div><h1>FoodTrace</h1><p class=mu>Inventory and traceability for packaged food factories</p><label>Username</label><input id=lu value=admin><label>Password</label><input id=lp type=password value=admin123 onkeydown="if(event.key=='Enter')login()"><p id=le class=er></p><button class="btn p w" onclick=login()>Sign in</button><p class=mu style="text-align:center">Demo login: admin / admin123</p></div></div>`;return}
+const top={};db.sales.forEach(s=>s.lines.forEach(l=>top[l.item]=(top[l.item]||0)+l.qty*l.price));const cl=['#3b82f6','#ec4899','#10b981'];
+const nm=(TB.find(t=>t[0]==view)||[0,0,'Invoice'])[2],al=alerts();
+a.innerHTML=`<div class=shell><aside class="side ${sb?'open':''}"><div class=brand><div class=logo>F</div>FoodTrace</div><div class=sl>NAVIGATION</div>${TB.map(t=>`<button class="ni ${view==t[0]?'on':''}" onclick="go('${t[0]}')"><span>${t[1]}</span>${t[2]}</button>`).join('')}<div class=sl>TOP SELLERS</div>${Object.entries(top).sort((x,y)=>y[1]-x[1]).slice(0,3).map(([k,v],i)=>`<div class=ts><i style="background:${cl[i]}">${item(k).name.slice(0,2).toUpperCase()}</i><div>${item(k).name}<small>${fm(v)}</small></div></div>`).join('')||'<div class=ts><small>No sales yet</small></div>'}<div style="flex:1"></div><button class=ni onclick="authed=false;render()"><span>🚪</span>Log out</button></aside><div class="ov ${sb?'open':''}" onclick=tsb()></div>
+<div class=main><header><button class="ib hm" onclick=tsb()>☰</button><div class=bc>Home / <b>${nm}</b></div><span class="mu dt">${new Date().toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric',year:'numeric'})}</span><button class=ib onclick=theme()>🌓</button><button class=ib onclick="go('dash')">🔔${al?`<em>${al}</em>`:''}</button><div class=av>AD</div></header><div class="pg ${an?'fade':''}">${views[view]()}</div></div></div>`;
+an=false;if(view=='dash')cnt()}
+render();
+</script></body></html>
